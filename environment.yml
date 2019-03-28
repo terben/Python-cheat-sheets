@@ -1,0 +1,10 @@
+name: Python-cheat-sheets
+
+dependencies:
+  - python>=3.6
+  - numpy
+  - matplotlib
+  - scipy
+  - astropy
+  - astroquery
+  - version_information
