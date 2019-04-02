@@ -7,4 +7,5 @@ dependencies:
   - scipy
   - astropy
   - astroquery
+  - pyyaml
   - version_information
