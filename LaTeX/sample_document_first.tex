@@ -1,0 +1,23 @@
+\documentclass[twocolumn,a4paper]{scrartcl}
+%
+\usepackage{blindtext}
+\usepackage{graphicx}
+\graphicspath{{../figs}}
+%
+\title{Python plots for LaTeX}
+%
+\begin{document}
+\maketitle
+\section{Introduction}
+Some random text out here \dots.
+%\noindent
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{cobe}
+  \caption{Scaled down of the originial matplotlib plot.
+    Usually, the text (labels and legends) look very small.}
+  \label{image1}
+\end{figure}
+%
+\end{document}
