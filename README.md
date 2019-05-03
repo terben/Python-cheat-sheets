@@ -1,5 +1,7 @@
 # Python cheat sheets
 
+Please press [![Binder](https://binderhub.astro.uni-bonn.de/badge_logo.svg)](https://binderhub.astro.uni-bonn.de/v2/gh/terben/Python-cheat-sheets/master) to enter an interactive notebook session of this repository.
+
 This reporsitory contains cheat sheets for a variety of `Python` topics in the
 form of `Juypter`-notebooks.
 
