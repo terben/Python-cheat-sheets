@@ -11,3 +11,5 @@ Currently available topics:
   `astroquery.vizier` module.
 
 - Identification and analysis of astronomical sources ala `SExtractor`: We show how to identify and to analyse objects in optical astronomical images. We present efficient and easy-to-use methods from the powerful `scipy.ndimage` module.
+
+- Graphics for publications with `matplotlib`: We present a method to create homogeneous and aesthetic graphics for scientific publications.
