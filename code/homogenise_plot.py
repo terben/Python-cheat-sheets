@@ -1,6 +1,12 @@
 import matplotlib
 import numpy as np
 
+# the code currently (May 2020) gives a lot of matplotlib deprecation warnings
+# which are probably cleaned up with matplotlibs version 3.3.
+# until then we just turn off these warnings:
+import warnings
+warnings.warn("this will not show")
+
 # store original plot parameters so that we can revert:
 ORIG_MATPLOTLIB_CONF = dict(matplotlib.rcParams)
 
