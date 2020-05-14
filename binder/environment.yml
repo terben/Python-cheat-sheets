@@ -1,7 +1,7 @@
 name: Python-cheat-sheets
 
 dependencies:
-  - python>=3.6
+  - python=3.7
   - numpy
   - matplotlib
   - scipy
