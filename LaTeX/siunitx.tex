@@ -1,0 +1,246 @@
+ \documentclass[12pt, a4paper]{scrartcl}
+
+\usepackage[british]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{siunitx}
+\usepackage{xspace}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{language=[LaTeX]TeX}
+\sisetup{range-phrase=--}
+
+% definitions for framed boxes
+\mdfdefinestyle{wrong}{%
+  linecolor=red,
+  roundcorner=5pt,
+  linewidth=2pt,
+  backgroundcolor=red!10}
+
+\mdfdefinestyle{correct}{%
+  linecolor=green,
+  roundcorner=5pt,
+  linewidth=2pt,
+  backgroundcolor=green!10}
+
+\newcommand{\siunitx}{\textit{siunitx}\xspace}
+
+\newcounter{tip}[section] \setcounter{tip}{0}
+\renewcommand{\thetip}{\arabic{section}.\arabic{tip}}
+\newenvironment{tip}[2][]{%
+\refstepcounter{tip}%
+\ifstrempty{#1}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=blue!20]
+{\strut Practical Tip~\thetip};}}
+}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=blue!20]
+{\strut Practical Tip~\thetip:~#1};}}%
+}%
+\mdfsetup{innertopmargin=10pt,linecolor=blue!20,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#2}}{\end{mdframed}}
+
+\begin{document}
+%
+\section{The \texttt{siunitx}-package to typeset
+  numbers and units in \LaTeX{} documents}
+Typesetting values with units correctly is a tedious but important,
+and often overlooked, part of publication writing in the natural
+sciences. It is particularly difficult for beginners to do it right
+and unfortunately, \LaTeX{} does not offer much help for this task in
+its standard configuration. Typesetting correct value/unit pairs is
+non-intuitive and requires detail knowledge on microtypography.
+
+Let us consider the following phrase which demonstrates common
+issues and difficulties when dealing with values and units:
+%
+\begin{mdframed}[style=wrong,frametitle=values and units with errors]
+  The -7 dB loss ($\pm 2 dB$) shown on pp.\,7-9 can be attributed to the
+  $f(t) = \sin(2\pi ft)$ signal, where $t$ is the time and $f=48$\, Khz
+  is the \emph{sampling frequency}.
+\end{mdframed}
+%
+The phrase was typeset with the following \LaTeX{} source code:
+%
+\begin{mdframed}[style=wrong, frametitle=values and units with errors
+  (\LaTeX{} source)]
+  \begin{lstlisting}
+  The -7 dB loss ($\pm 2 dB$) shown on pp.\,7-9 can be
+  attributed to the $f(t) = \sin(2\pi ft)$ signal, where
+  $t$ is the time and $f=48$\, Khz is the \emph{sampling
+  frequency}.
+  \end{lstlisting}
+\end{mdframed}
+%
+If you are trained to spot typographical errors, you will discover the
+following issues:
+%
+\begin{itemize}
+  \item Similar to mathematical symbols in text, numbers must be typeset
+    within a mathematical environment to be sure that they appear
+    correctly. Outside math-mode, the \emph{minus sign} becomes the much
+    shorter hyphen: -7 $\rightarrow$ $-7$. (\verb|-7| $\rightarrow$
+    \verb|$-7$|).
+    %
+  \item Units of measurement are typeset outside math-mode in an
+    upright font. Math-mode italic is used for mathematical variables,
+    not for units and constants. Moreover, there must be a \emph{small
+    space} between the value and the unit: $\pm 2 dB$ $\rightarrow$
+    $\pm 2$\,dB (\verb|$\pm 2 dB$| $\rightarrow$ \verb|$\pm 2$\,dB|).
+    %
+  \item Number ranges are typeset with an en-dash, not with a hyphen:
+    7-9 $\rightarrow$ 7--9 (\verb|7-9| $\rightarrow$ \verb|7--9|).
+    %
+  \item SI units have a standardized usage of uppercase versus
+    lowercase letters. Prefixes kilo and below are abbreviated with a
+    lowercase letter, mega and above with an uppercase letter. Symbols
+    of base units names after a person start with an uppercase letter:
+    Khz $\rightarrow$ kHz (\verb|Khz| $\rightarrow$ \verb|kHz|).
+    %
+  \item There must be a \emph{small space} (typeset in \LaTeX{} with
+    \verb|\,|) between a value and its unit. Note than an additional
+    space in the source code after \verb|\,| results in a wrong
+    spacing: $f=48$\, kHz $\rightarrow$  $f=48$\,kHz
+    (\verb|$f=48$\, kHz| $\rightarrow$ \verb|$f=48$\,kHz|).
+\end{itemize}
+%
+Typeset correctly, the output and the source of the example phrase
+look as follows:
+\begin{mdframed}[style=correct,frametitle=values and units]
+  The $-7$\,dB loss ($\pm 2$\,dB) shown on pp.\,7--9 can be attributed to the
+  $f(t) = \sin(2\pi ft)$ signal, where $t$ is the time and $f=48$\,KHz
+  is the \emph{sampling frequency}.
+\end{mdframed}
+%
+\begin{mdframed}[style=correct,frametitle=values and units (\LaTeX{} source)]
+  \begin{lstlisting}
+  The $-7$\,dB loss ($\pm 2$\,dB) shown on pp.\,7--9 can be
+  attributed to the $f(t) = \sin(2\pi ft)$ signal, where
+  $t$ is the time and $f=48$\,kHz is the \emph{sampling
+  frequency}.
+  \end{lstlisting}
+\end{mdframed}
+%
+It is obvious that a \LaTeX{} package, which takes away from the author
+much of the burden with this kind of microtypography, is very desirable.
+
+\siunitx is such a package. It is very powerful \LaTeX-package and
+provides you with a consistent syntax to typeset values, ranges,
+lists, units, tabulated data, and uncertainties. It also handles
+country-specific typographic rules and it is highly configurable. In
+the following, we highlight some of its features with short examples.
+For a comprehensive manual, please see the well written documentation
+at \url{http://tug.ctan.org/macros/latex/exptl/siunitx/siunitx.pdf}.
+%
+\subsection{The basic value-unit pair}
+In \siunitx, one types a value with a unit using the \verb|\SI|
+command. This command works in both math-mode and inline with text. In
+both environments the value and the unit are rendered in the same
+way. The syntax is fairly self-explanatory. The package supports a
+very large number of different units and differewnt ways to type them.
+For beginners, the most intuitive way is to typeset units
+\emph{literally} such as \verb|\tera\electronvolt| or
+\verb|\centi\meter|. For a full list of available units check-out the
+\siunitx documentation. You can also typeset composite units such as
+\verb|\centi\meter\per\second| and so on. \siunitx automatically takes
+care of correct spacing between units. Table~\ref{tab:numb_units}
+gives some examples.
+%
+\begin{table}[ht]
+  \caption{Some basic \siunitx-examples}
+  \label{tab:numb_units}
+  \centering
+  \begin{tabular}{lcp{4cm}}
+    \toprule
+    \textbf{\LaTeX-input} & \textbf{text output} & \textbf{comments} \\
+    \midrule
+    \verb|\SI{8}{\kilo\meter}| & \SI{8}{\kilo\meter} & simple unit \\
+    \verb|\SI{8}{\kilo\meter\per\second}| &
+      \SI{8}{\kilo\meter\per\second} & composed unit \\
+    \verb|\SI{8.0e03}{\meter\second}| &
+      \SI{8.0e03}{\meter\second} & numbers can be typeset in many
+      different formats (here in raw program output) \\
+    \verb|\SI{0.8e05}{\milli\second}| &
+      \SI{0.8e05}{\milli\second} & note the different settings of the
+      units \verb|\meter\second| (last example) and
+      \verb|\milli\second|. The first one requires a small space
+      between \texttt{m} and \texttt{s}!\\
+    \verb|\SI{245.6 +- 10}{\meter\squared}| &
+      \SI{245.6 +- 10}{\meter\squared} & numbers with errors \\
+    \midrule
+    \verb|\ang{10;5;2}| & \ang{10;5;2} & angles \\
+    \verb|\num{123456789}| &
+      \num{123456789} & long numbers get correct grouping  \\
+    \verb|\num{1 + 2i}| &
+      \num{1+2i} & complex numbers \\
+    \midrule
+    \verb|\si{\tera\electronvolt}| &
+      \si{\tera\electronvolt} & units without associated numbers  \\
+    \midrule
+    \verb|\SIrange{2}{10}{\percent}| &
+      \SIrange{2}{10}{\percent}  & ranges of numbers  \\
+    \midrule
+    \verb|\SIlist{2;9;10}{\cm}| &
+        \SIlist{2;9;10}{\cm} & lists of numbers  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+If you need to render units or values on their own, \siunitx provides
+the \verb|\si| and \verb|\num| commands. The former will typeset large
+numbers with a delimiter to group digits together to improve
+readability. \siunitx also offers possibilities to typeset numbers
+with errors, ranges of numbers and so on. Table~\ref{tab:numb_units}
+gives a few examples but you need to consult the
+\siunitx-documentation for any details.
+
+With \siunitx, the example phrase would be typeset and output as
+follows:
+%
+\begin{mdframed}[style=correct,frametitle=values and units with
+  \siunitx (\LaTeX{} source)]
+  \begin{lstlisting}
+  The \SI{-7}{\deci\bel} loss (\SI{+- 2}{\deci\bel}) shown on
+  pp.\,\numrange{7}{9} can be attributed to the
+  $f(t) = \sin(2\pi ft)$ signal, where $t$ is the time and
+  $f=\SI{48}{\kilo\hertz}$ is the \emph{sampling frequency}.
+  \end{lstlisting}
+\end{mdframed}
+%
+\begin{mdframed}[style=correct,frametitle=values and units with \siunitx]
+  The \SI{-7}{\deci\bel} loss (\SI{+- 2}{\deci\bel}) shown on
+  pp.\,\numrange{7}{9} can be attributed to the
+  $f(t) = \sin(2\pi ft)$ signal, where $t$ is the time and
+  $f=\SI{48}{\kilo\hertz}$ is the \emph{sampling frequency}.
+\end{mdframed}
+%
+\begin{tip}{tip:unit_typeset}
+  Many people think that they are sufficiently comfortable with the
+  necessary typographical rules. They quickly tend to not typeset units
+  literally like
+  \SI{1}{\tera\electronvolt} (\verb|\SI{1}{\tera\electronvolt}|)
+  but to do it \emph{shorter} such as \SI{1}{TeV} (\verb|\SI{1}{TeV}|).
+
+  I strongly advice you not to do so! You give away most of
+  the assistance to typeset units correctly. Do you note the
+  difference between \SI{1}{\meter\newton}
+  (\verb|\SI{1}{\meter\newton}|) and \SI{1}{\milli\newton}
+  (\verb|\SI{1}{\milli\newton}|)? How would you typeset those units
+  without the literal approach?
+\end{tip}
+%
+\end{document}
