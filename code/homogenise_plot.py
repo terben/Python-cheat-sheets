@@ -1,9 +1,13 @@
 import matplotlib
 import numpy as np
 
-# the code currently (May 2020) gives a lot of matplotlib deprecation warnings
-# which are probably cleaned up with matplotlibs version 3.3.
-# until then we just turn off these warnings:
+# CHNAGELOG:
+#
+# 29.06.2023:
+# The API for the matplotlib param 'text.latex.preamble' changed.
+# I adapted the code accrdingly.
+
+# to be sure that we are not swamped with deprecation warnings:
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -37,11 +41,7 @@ def homogenise_plot(fig_width=None, fig_height=None, columns=1, fontsize=8):
         fig_height = fig_width * golden_mean # height in inches
 
     params = {'backend': 'ps',
-              'text.latex.preamble':
-              [ r'\usepackage{siunitx}',
-                r'\usepackage[utf8]{inputenc}',
-                r'\usepackage[T1]{fontenc}',
-                r'\DeclareSIUnit \jansky {Jy}' ],
+              'text.latex.preamble': r'\usepackage{siunitx}\usepackage[utf8]{inputenc}\usepackage[T1]{fontenc}\DeclareSIUnit \jansky {Jy}',
               'axes.labelsize' : fontsize,
               'axes.titlesize' : fontsize,
               'font.size': fontsize,
